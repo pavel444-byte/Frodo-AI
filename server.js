@@ -3,7 +3,7 @@ const axios = require('axios');
 const cors = require('cors');
 const path = require('path'); // Import the path module
 const app = express();
-const port = 5000;
+const port = 5001; // Changed port to 5001
 require('dotenv').config(); // Load environment variables
 
 app.use(cors());

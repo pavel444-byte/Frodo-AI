@@ -19,7 +19,7 @@
   },
   "scripts": {
     "start": "concurrently \"node server.js\" \"npm run client\"",
-    "client": "cd client && react-scripts start",
+    "client": "cd client && npm start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
