@@ -14,7 +14,7 @@ bot.on('message', async (msg) => {
         const response = await axios.post('http://localhost:5001/chat', { message: userMessage });
         const aiResponse = response.data;
 
-        bot.sendMessage(chatId, aiResponse);
+    bot.sendMessage(chatId, aiResponse);
     } catch (error) {
         console.error('Error sending message to server:', error);
         bot.sendMessage(chatId, 'Error communicating with the AI service.');
