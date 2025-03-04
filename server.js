@@ -1,18 +1,18 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
-const path = require('path'); // Import the path module
+const path = require('path');
 const app = express();
-const port = 5001; // Changed port to 5001
-require('dotenv').config(); // Load environment variables
+const port = 5001;
+require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
 
-const API_PROVIDER = process.env.API_PROVIDER || 'openrouter'; // Default to OpenRouter
+const API_PROVIDER = process.env.API_PROVIDER || 'openrouter';
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // Add OpenAI API Key
-const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY; // Add DeepSeek API Key
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
 
 if (API_PROVIDER === 'openrouter' && !OPENROUTER_API_KEY) {
     console.error("Error: OPENROUTER_API_KEY environment variable not set.");
@@ -28,7 +28,6 @@ if (API_PROVIDER === 'deepseek' && !DEEPSEEK_API_KEY) {
     console.error("Error: DEEPSEEK_API_KEY environment variable not set.");
     process.exit(1);
 }
-
 
 console.warn(`Server is running with API provider: ${API_PROVIDER}`);
 
@@ -62,7 +61,7 @@ app.post('/chat', async (req, res) => {
                 break;
         }
 
-       if (responseData && responseData.choices && responseData.choices.length > 0) {
+        if (responseData && responseData.choices && responseData.choices.length > 0) {
             const aiMessage = responseData.choices[0].message.content;
             res.json(aiMessage);
         } else {
@@ -75,7 +74,7 @@ app.post('/chat', async (req, res) => {
         if (error.response) {
             console.error('Error ', error.response.data);
             console.error('Error status:', error.response.status);
-            res.status(error.response.status).send(`Error processing request: ${error.response.data.error}`);
+            res.status(error.response.status).send(`Error processing request: ${JSON.stringify(error.response.data)}`);
         } else if (error.request) {
             console.error('No response received:', error.request);
             res.status(500).send('No response received from the AI service.');
@@ -152,11 +151,8 @@ async function callDeepSeek(message) {
     }
 }
 
-// Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'client/build')));
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
 app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'client/build/index.html'));
 });

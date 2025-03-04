@@ -42,7 +42,7 @@ code {
 .chat-display {
   flex-grow: 1;
   padding: 10px;
-  overflow-y: auto; /* Enable vertical scrolling */
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 }
