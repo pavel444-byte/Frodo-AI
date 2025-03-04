@@ -3,9 +3,10 @@
 const Discord = require('discord.js');
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 const axios = require('axios'); // Import axios
+require('dotenv').config(); // Load environment variables
 
 // Replace with your bot token
-const discordBotToken = 'YOUR_DISCORD_BOT_TOKEN';
+const discordBotToken = process.env.DISCORD_BOT_TOKEN;
 
 // Create a new Discord client
 const client = new Client({
