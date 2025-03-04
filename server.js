@@ -151,10 +151,12 @@ async function callDeepSeek(message) {
     }
 }
 
-app.use(express.static(path.join(__dirname, 'client/build'))); // Revert to 'client/build'
+app.use(express.static(path.join(__dirname, 'client/public'))); // Modified to serve from 'client/public'
+// app.use(express.static(path.join(__dirname, 'client/build'))); // Original line
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/build/index.html')); // Revert to 'client/build/index.html'
+    res.sendFile(path.join(__dirname, 'client/public/index.html')); // Modified to serve index.html from 'client/public'
+    // res.sendFile(path.join(__dirname, 'client/build/index.html')); // Original line
 });
 
 app.listen(port, () => {
