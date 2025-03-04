@@ -1,6 +1,5 @@
 // This is a conceptual example and requires further implementation
 
-const Discord = require('discord.js');
 const { Client, Events, GatewayIntentBits } = require('discord.js');
 const axios = require('axios'); // Import axios
 require('dotenv').config(); // Load environment variables
@@ -17,11 +16,11 @@ const client = new Client({
     ]
 });
 
-client.on('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
+client.once(Events.ClientReady, c => {
+	console.log(`Ready! Logged in as ${c.user.tag}`);
 });
 
-client.on('messageCreate', async msg => {
+client.on(Events.MessageCreate, async msg => {
     if (msg.content.startsWith('!ai')) {
         const userMessage = msg.content.slice(3).trim(); // Remove '!ai' prefix
         // Send the message to your server's /chat endpoint
