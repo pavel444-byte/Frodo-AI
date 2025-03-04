@@ -1,11 +1,11 @@
 # Frodo-AI Chat Application
 
-FrodoAI is an AI chat application that is currently available on the web. Discord and Telegram integrations are planned for the future. This repository contains the code for the web-based chat interface.
+FrodoAI is a web-based AI chat application with planned integrations for Discord and Telegram. This repository contains the code for the web interface and the backend server.
 
 ## Prerequisites
 
-- Node.js (version >= 14)
-- npm (version >= 6) or yarn
+- [Node.js](https://nodejs.org/) (version >= 14)
+- [npm](https://www.npmjs.com/) (version >= 6) or [yarn](https://yarnpkg.com/)
 
 ## Installation
 
@@ -32,36 +32,36 @@ FrodoAI is an AI chat application that is currently available on the web. Discor
 
 1.  **Set up environment variables:**
 
-    *   Create a `.env` file in the root directory of the `ai-chat` folder.
+    *   Create a `.env` file in the root directory.
     *   Add your OpenRouter API key to the `.env` file:
 
         ```
         OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
         ```
 
-    *Note:* It is crucial to keep your API key secure. Never commit your `.env` file to a public repository.
+    **Important:** Never commit your `.env` file to a public repository. This file contains sensitive information.
 
 ## Running the Application
 
-1.  Start the backend server:
-
-    ```sh
-    npm start
-    ```
-
-    This command will start the React development server, usually on port 3000.
-
-2.  Start the server (if it's not already running):
-
-    In a separate terminal, navigate to the directory containing `server.js` and run:
+1.  **Start the backend server:**
 
     ```sh
     node server.js
     ```
 
-    This will start the Express server, by default on port 5000.
+    This starts the Express server on port 5000 (by default).  Ensure the `OPENROUTER_API_KEY` environment variable is set before running this command. The server will exit if the API key is not found.
 
-3.  Open your browser and navigate to `http://localhost:3000` to access the chat application.
+2.  **Start the frontend development server:**
+
+    ```sh
+    npm start
+    ```
+
+    This starts the React development server, typically on port 3000.
+
+3.  **Access the application:**
+
+    Open your browser and navigate to `http://localhost:3000`.
 
 ## Project Structure
 

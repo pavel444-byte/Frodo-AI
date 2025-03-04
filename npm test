@@ -1,0 +1,3 @@
+
+Additionally, the `test_openrouter.py` script can be used to test the OpenRouter API independently.  Ensure the `OPENROUTER_API_KEY` environment variable is set before running the script.
+

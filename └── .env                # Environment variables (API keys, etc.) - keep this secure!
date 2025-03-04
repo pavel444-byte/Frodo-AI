@@ -1,4 +1,5 @@
 
-## Contributing
+## Testing
 
-Contributions are welcome! Please fork the repository and submit a pull request with your changes.
+The project includes a basic test for the `App.js` component. To run the tests:
+
