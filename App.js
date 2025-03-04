@@ -1,37 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
+import './App.css';
 
 function App() {
-  const [message, setMessage] = useState('');
-  const [response, setResponse] = useState('');
+    const [message, setMessage] = useState('');
+    const [chat, setChat] = useState([]);
+    const [isTyping, setIsTyping] = useState(false);
 
-  useEffect(() => {
-    const fetchResponse = async () => {
-      try {
-        const response = await axios.post('http://localhost:5000/chat', { message });
-        setResponse(response.data);
-      } catch (error) {
-        console.error('Error fetching response:', error);
-      }
+    const sendMessage = async () => {
+        if (message.trim() === '') return;
+
+        const userMessage = { text: message, sender: 'user' };
+        setChat(prevChat => [...prevChat, userMessage]);
+        setMessage('');
+        setIsTyping(true);
+
+        try {
+            const response = await axios.post('http://localhost:5000/chat', { message: message });
+            const aiMessage = { text: response.data, sender: 'ai' };
+            setChat(prevChat => [...prevChat, aiMessage]);
+        } catch (error) {
+            console.error('Error sending message:', error);
+            const errorAI = { text: "Sorry, I'm having trouble connecting to the server.", sender: 'ai' };
+            setChat(prevChat => [...prevChat, errorAI]);
+        } finally {
+            setIsTyping(false);
+        }
     };
 
-    fetchResponse();
-  }, [message]);
+    const handleInputChange = (e) => {
+        setMessage(e.target.value);
+    };
 
-  return (
-    <div className="App">
-      <header className="App-header">
-        <h1>Hello from the frontend!</h1>
-        <p>{response}</p>
-        <input
-          type="text"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-          placeholder="Type a message..."
-        />
-      </header>
-    </div>
-  );
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    };
+
+    return (
+        <div className="App">
+            <header className="App-header">
+                <h1>AI Chat</h1>
+                <div className="chat-container">
+                    <div className="chat-display">
+                        {chat.map((msg, index) => (
+                            <div key={index} className={`message ${msg.sender}`}>
+                                {msg.text}
+                            </div>
+                        ))}
+                        {isTyping && <div className="message ai">Typing...</div>}
+                    </div>
+                    <div className="input-area">
+                        <input
+                            type="text"
+                            value={message}
+                            onChange={handleInputChange}
+                            onKeyDown={handleKeyDown}
+                            placeholder="Type your message..."
+                            className="chat-input"
+                        />
+                        <button onClick={sendMessage} className="send-button">Send</button>
+                    </div>
+                </div>
+            </header>
+        </div>
+    );
 }
 
 export default App;
