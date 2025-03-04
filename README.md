@@ -76,7 +76,7 @@ The application relies on environment variables for configuration. Here's how to
     node server.js
     ```
 
-    This command starts the Express server, which handles the AI API interactions. It runs on port 5000 by default. Ensure that you have set the necessary API key environment variable before running this command. The server will exit if the API key is missing.
+    This command starts the Express server, which handles the AI API interactions. It runs on port 5000 by default. Before running this command, ensure that you have set the necessary API key environment variable. The server will exit if the API key is missing.
 
 2.  **Start the frontend development server:**
 
