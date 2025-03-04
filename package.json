@@ -18,7 +18,8 @@
     "concurrently": "^8.2.2"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "concurrently \"node server.js\" \"npm run client\"",
+    "client": "cd client && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
