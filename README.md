@@ -44,6 +44,9 @@ FrodoAI is a web-based AI chat application with planned integrations for Discord
         OPENAI_API_KEY=YOUR_OPENAI_API_KEY
         #OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY #Uncomment if using OpenRouter
         ```
+    *   **For Discord and Telegram integration:**
+        *   Add your Discord bot token as `DISCORD_BOT_TOKEN=YOUR_DISCORD_BOT_TOKEN`.
+        *   Add your Telegram bot token as `TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN`.
 
     **Important:** Never commit your `.env` file to a public repository. This file contains sensitive information.
 
