@@ -1,21 +1,47 @@
 
 ## Testing
 
-The project includes basic tests to ensure the application is functioning correctly.
+The project includes several ways to test its functionality:
 
 *   **Frontend Tests:** To run the React component tests:
 
-    ```sh
-    npm test
-    ```
+    1.  Make sure the frontend development server is not running (stop it if it is).
+    2.  Run the following command:
 
-*   **Backend Tests:** To test the OpenRouter API connectivity using the Python script:
+        ```sh
+        npm test
+        ```
 
-    ```sh
-    python test_openrouter.py
-    ```
+    This will execute the tests defined in `src/App.test.js` using Jest and React Testing Library.  The test checks if the "AI Chat" header renders correctly.  You can add more tests to cover different aspects of the user interface.
 
-    Make sure the `OPENROUTER_API_KEY` environment variable is set before running this test.
+*   **Backend API Tests:** To test the backend API and its connection to the AI provider:
+
+    1.  Ensure that you have set the `API_PROVIDER` and the corresponding API key (e.g., `OPENROUTER_API_KEY`, `OPENAI_API_KEY`, or `DEEPSEEK_API_KEY`) in your `.env` file.
+    2.  Make sure the backend server is running:
+
+        ```sh
+        node server.js
+        ```
+
+    3.  In a separate terminal, run the `test_openrouter.py` script:
+
+        ```sh
+        python test_openrouter.py
+        ```
+
+    This script will prompt you to enter a message, send it to the configured AI provider via your backend server, and print the AI's response.  This verifies that your server can successfully communicate with the AI provider.
+
+*   **Discord and Telegram Integration Tests (Manual):**
+
+    1.  Ensure that you have set the `DISCORD_BOT_TOKEN` and `TELEGRAM_BOT_TOKEN` in your `.env` file.
+    2.  Run the Discord and Telegram integration scripts in separate terminals:
+
+        ```sh
+        node discord_integration.js
+        node telegram_integration.js
+        ```
+
+    3.  Interact with your bots on Discord and Telegram by sending them messages.  Verify that they respond with AI-generated content.  Note that the Discord bot requires you to prefix your messages with `!ai`.
 
 ## Contributing
 
