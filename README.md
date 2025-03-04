@@ -88,6 +88,6 @@ The application relies on environment variables for configuration. Here's how to
 
 3.  **Access the application:**
 
-    Open your web browser and navigate to `http://localhost:3000` to start chatting with the AI!
+    Open your web browser and navigate to Url if shown in the command system to start chatting with the AI!
 
 
