@@ -151,10 +151,10 @@ async function callDeepSeek(message) {
     }
 }
 
-app.use(express.static(path.join(__dirname, 'client/public'))); // Changed from 'client/build' to 'client/public'
+app.use(express.static(path.join(__dirname, 'client/build'))); // Revert to 'client/build'
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/public/index.html')); // Changed from 'client/build/index.html' to 'client/public/index.html'
+    res.sendFile(path.join(__dirname, 'client/build/index.html')); // Revert to 'client/build/index.html'
 });
 
 app.listen(port, () => {
