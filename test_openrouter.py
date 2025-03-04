@@ -43,6 +43,19 @@ def chat_with_openrouter(message):
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
+def test_server_connection():
+    """
+    Tests the connection to the /test-env endpoint of the server.
+    """
+    try:
+        response = requests.get("http://localhost:5000/test-env")
+        response.raise_for_status()
+        print("Server connection test successful!")
+        print("Response:", response.text)
+    except requests.exceptions.RequestException as e:
+        print(f"Server connection test failed: {e}")
+
 if __name__ == "__main__":
+    test_server_connection()
     message = input("Enter your message: ")
     chat_with_openrouter(message)

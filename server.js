@@ -3,6 +3,7 @@ const axios = require('axios');
 const cors = require('cors');
 const app = express();
 const port = 5000;
+require('dotenv').config(); // Load environment variables
 
 app.use(cors());
 app.use(express.json());
@@ -29,6 +30,14 @@ if (API_PROVIDER === 'deepseek' && !DEEPSEEK_API_KEY) {
 
 
 console.warn(`Server is running with API provider: ${API_PROVIDER}`);
+
+app.get('/test-env', (req, res) => {
+    if (process.env.OPENROUTER_API_KEY) {
+        res.status(200).send('Environment variables are correctly loaded.');
+    } else {
+        res.status(500).send('Environment variables are NOT loaded!');
+    }
+});
 
 app.post('/chat', async (req, res) => {
     const { message } = req.body;
