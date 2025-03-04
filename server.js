@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const cors = require('cors');
+const path = require('path'); // Import the path module
 const app = express();
 const port = 5000;
 require('dotenv').config(); // Load environment variables
@@ -150,6 +151,15 @@ async function callDeepSeek(message) {
         throw error;
     }
 }
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client/build/index.html'));
+});
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
