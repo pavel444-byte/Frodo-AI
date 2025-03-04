@@ -1,0 +1,31 @@
+
+## Testing
+
+The project includes basic tests to ensure the application is functioning correctly.
+
+*   **Frontend Tests:** To run the React component tests:
+
+    ```sh
+    npm test
+    ```
+
+*   **Backend Tests:** To test the OpenRouter API connectivity using the Python script:
+
+    ```sh
+    python test_openrouter.py
+    ```
+
+    Make sure the `OPENROUTER_API_KEY` environment variable is set before running this test.
+
+## Contributing
+
+We welcome contributions to enhance FrodoAI! If you'd like to contribute, please follow these steps:
+
+1.  Fork the repository.
+2.  Create a new branch for your feature or bug fix.
+3.  Implement your changes.
+4.  Submit a pull request with a clear description of your changes.
+
+## License
+
+[Specify the license here, e.g., MIT License]

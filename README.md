@@ -1,28 +1,39 @@
 # Frodo-AI Chat Application
 
-FrodoAI is a web-based AI chat application with planned integrations for Discord and Telegram. This repository contains the code for the web interface and the backend server.
+FrodoAI is a versatile AI chat application designed for web, with future integrations planned for platforms like Discord and Telegram. This repository houses the complete source code for the web interface and the backend server, providing a foundation for building and extending the application.
+
+## Key Features
+
+*   **Multi-Platform Support (Planned):** Designed with future integrations in mind, including Discord, Telegram, Slack, and Facebook.
+*   **Configurable AI Provider:** Easily switch between different AI providers like OpenRouter, OpenAI, and DeepSeek.
+*   **Secure API Key Management:** Utilizes environment variables for secure storage and management of API keys.
+*   **Modular Design:** Well-structured codebase for easy understanding and modification.
 
 ## Prerequisites
 
-- [Node.js](https://nodejs.org/) (version >= 14)
-- [npm](https://www.npmjs.com/) (version >= 6) or [yarn](https://yarnpkg.com/)
+Before you begin, ensure you have the following installed:
+
+*   [Node.js](https://nodejs.org/) (version >= 14)
+*   [npm](https://www.npmjs.com/) (version >= 6) or [yarn](https://yarnpkg.com/)
 
 ## Installation
 
-1.  Clone the repository:
+Follow these steps to get the application up and running:
+
+1.  **Clone the repository:**
 
     ```sh
     git clone <repository-url>
     cd ai-chat
     ```
 
-2.  Install dependencies:
+2.  **Install dependencies:**
 
     ```sh
     npm install
     ```
 
-    or
+    or, if you prefer using Yarn:
 
     ```sh
     yarn install
@@ -30,25 +41,32 @@ FrodoAI is a web-based AI chat application with planned integrations for Discord
 
 ## Configuration
 
-1.  **Set up environment variables:**
+The application relies on environment variables for configuration. Here's how to set them up:
 
-    *   Create a `.env` file in the root directory.
-    *   Set the `API_PROVIDER` environment variable to choose the AI provider:
+1.  **Create a `.env` file:** In the root directory of the project, create a file named `.env`.
+
+2.  **Configure AI Provider:**
+    *   Set the `API_PROVIDER` variable to your preferred AI provider. Options include:
         *   `openrouter` (default): Uses the OpenRouter API. Requires `OPENROUTER_API_KEY`.
         *   `openai`: Uses the OpenAI API. Requires `OPENAI_API_KEY`.
         *   `deepseek`: Uses the DeepSeek API. Requires `DEEPSEEK_API_KEY`.
-    *   Add the API key for your chosen provider to the `.env` file:
+    *   Add the corresponding API key for your chosen provider:
 
         ```
         API_PROVIDER=openai
         OPENAI_API_KEY=YOUR_OPENAI_API_KEY
         #OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY #Uncomment if using OpenRouter
         ```
-    *   **For Discord and Telegram integration:**
-        *   Add your Discord bot token as `DISCORD_BOT_TOKEN=YOUR_DISCORD_BOT_TOKEN`.
-        *   Add your Telegram bot token as `TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN`.
 
-    **Important:** Never commit your `.env` file to a public repository. This file contains sensitive information.
+3.  **Configure Platform Integrations (Optional):**
+    *   If you plan to use Discord or Telegram integrations, add the following:
+        *   `DISCORD_BOT_TOKEN=YOUR_DISCORD_BOT_TOKEN`
+        *   `TELEGRAM_BOT_TOKEN=YOUR_TELEGRAM_BOT_TOKEN`
+    *   Placeholders for other platforms are also available:
+        *   `SLACK_BOT_TOKEN=YOUR_SLACK_BOT_TOKEN`
+        *   `FACEBOOK_PAGE_TOKEN=YOUR_FACEBOOK_PAGE_TOKEN`
+
+    **Important:** Treat your `.env` file with utmost care. **Never commit it to a public repository**, as it contains sensitive API keys and tokens.
 
 ## Running the Application
 
@@ -58,7 +76,7 @@ FrodoAI is a web-based AI chat application with planned integrations for Discord
     node server.js
     ```
 
-    This starts the Express server on port 5000 (by default). Ensure the necessary API key environment variable (`OPENROUTER_API_KEY`, `OPENAI_API_KEY`, or `DEEPSEEK_API_KEY`) is set before running this command. The server will exit if the API key is not found.
+    This command starts the Express server, which handles the AI API interactions. It runs on port 5000 by default. Ensure that you have set the necessary API key environment variable before running this command. The server will exit if the API key is missing.
 
 2.  **Start the frontend development server:**
 
@@ -66,11 +84,13 @@ FrodoAI is a web-based AI chat application with planned integrations for Discord
     npm start
     ```
 
-    This starts the React development server, typically on port 3000.
+    This command launches the React development server, which serves the web interface. It typically runs on port 3000.
 
 3.  **Access the application:**
 
-    Open your browser and navigate to `http://localhost:3000`.
+    Open your web browser and navigate to `http://localhost:3000` to start chatting with the AI!
 
 ## Project Structure
+
+The project is organized as follows:
 
