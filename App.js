@@ -16,7 +16,7 @@ function App() {
         setIsTyping(true);
 
         try {
-            const response = await axios.post('http://localhost:5000/chat', { message: message });
+            const response = await axios.post('http://localhost:5001/chat', { message: message });
             const aiMessage = { text: response.data, sender: 'ai' };
             setChat(prevChat => [...prevChat, aiMessage]);
         } catch (error) {

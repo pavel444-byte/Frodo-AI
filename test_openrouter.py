@@ -48,7 +48,7 @@ def test_server_connection():
     Tests the connection to the /test-env endpoint of the server.
     """
     try:
-        response = requests.get("http://localhost:5000/test-env")
+        response = requests.get("http://localhost:5001/test-env")
         response.raise_for_status()
         print("Server connection test successful!")
         print("Response:", response.text)
