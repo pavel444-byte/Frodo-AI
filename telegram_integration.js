@@ -1,4 +1,5 @@
 // This is a conceptual example and requires further implementation
+Telegram_bot_token = '7627697742:AAFPRetvYgpZBdxfy0SttM75PRmnvo6deeY'
 
 const TelegramBot = require('node-telegram-bot-api');
 const axios = require('axios'); // Import axios
