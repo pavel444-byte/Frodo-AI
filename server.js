@@ -52,8 +52,9 @@ app.post('/chat', async (req, res) => {
                 break;
         }
 
-        if (responseData && responseData.choices && responseData.choices.length > 0) {
-            res.json(responseData.choices[0].message.content);
+       if (responseData && responseData.choices && responseData.choices.length > 0) {
+            const aiMessage = responseData.choices[0].message.content;
+            res.json(aiMessage);
         } else {
             console.error('Unexpected response format:', responseData);
             res.status(500).send('Unexpected response format from the AI service.');
