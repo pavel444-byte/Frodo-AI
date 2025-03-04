@@ -7,14 +7,28 @@ const port = 5000;
 app.use(cors());
 app.use(express.json());
 
-const apiKey = process.env.OPENROUTER_API_KEY;
+const API_PROVIDER = process.env.API_PROVIDER || 'openrouter'; // Default to OpenRouter
+const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY; // Add OpenAI API Key
+const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY; // Add DeepSeek API Key
 
-if (!apiKey) {
+if (API_PROVIDER === 'openrouter' && !OPENROUTER_API_KEY) {
     console.error("Error: OPENROUTER_API_KEY environment variable not set.");
-    process.exit(1); // Exit the process if the API key is not set
+    process.exit(1);
 }
 
-console.warn("Server is running with API key from environment variables.");
+if (API_PROVIDER === 'openai' && !OPENAI_API_KEY) {
+    console.error("Error: OPENAI_API_KEY environment variable not set.");
+    process.exit(1);
+}
+
+if (API_PROVIDER === 'deepseek' && !DEEPSEEK_API_KEY) {
+    console.error("Error: DEEPSEEK_API_KEY environment variable not set.");
+    process.exit(1);
+}
+
+
+console.warn(`Server is running with API provider: ${API_PROVIDER}`);
 
 app.post('/chat', async (req, res) => {
     const { message } = req.body;
@@ -24,26 +38,27 @@ app.post('/chat', async (req, res) => {
     }
 
     try {
-        const response = await axios.post(
-            'https://api.openrouter.ai/api/v1/chat/completions',
-            {
-                model: 'mistralai/Mistral-7B-Instruct-v0.1',
-                messages: [{ role: 'user', content: message }],
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${apiKey}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
+        let responseData;
 
-        if (response.data && response.data.choices && response.data.choices.length > 0) {
-            res.json(response.data.choices[0].message.content);
+        switch (API_PROVIDER) {
+            case 'openai':
+                responseData = await callOpenAI(message);
+                break;
+            case 'deepseek':
+                responseData = await callDeepSeek(message);
+                break;
+            default: // 'openrouter'
+                responseData = await callOpenRouter(message);
+                break;
+        }
+
+        if (responseData && responseData.choices && responseData.choices.length > 0) {
+            res.json(responseData.choices[0].message.content);
         } else {
-            console.error('Unexpected response format:', response.data);
+            console.error('Unexpected response format:', responseData);
             res.status(500).send('Unexpected response format from the AI service.');
         }
+
     } catch (error) {
         console.error('Error fetching response:', error);
         if (error.response) {
@@ -59,6 +74,72 @@ app.post('/chat', async (req, res) => {
         }
     }
 });
+
+async function callOpenRouter(message) {
+    try {
+        const response = await axios.post(
+            'https://api.openrouter.ai/api/v1/chat/completions',
+            {
+                model: 'mistralai/Mistral-7B-Instruct-v0.1',
+                messages: [{ role: 'user', content: message }],
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('OpenRouter API Error:', error);
+        throw error;
+    }
+}
+
+async function callOpenAI(message) {
+    try {
+        const response = await axios.post(
+            'https://api.openai.com/v1/chat/completions',
+            {
+                model: 'gpt-3.5-turbo',
+                messages: [{ role: 'user', content: message }],
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('OpenAI API Error:', error);
+        throw error;
+    }
+}
+
+async function callDeepSeek(message) {
+    try {
+        const response = await axios.post(
+            'https://api.deepseek.com/v1/chat/completions',
+            {
+                model: 'deepseek-chat',
+                messages: [{ role: 'user', content: message }],
+            },
+            {
+                headers: {
+                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
+                    'Content-Type': 'application/json'
+                }
+            }
+        );
+        return response.data;
+    } catch (error) {
+        console.error('DeepSeek API Error:', error);
+        throw error;
+    }
+}
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);

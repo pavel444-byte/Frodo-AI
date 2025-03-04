@@ -33,10 +33,16 @@ FrodoAI is a web-based AI chat application with planned integrations for Discord
 1.  **Set up environment variables:**
 
     *   Create a `.env` file in the root directory.
-    *   Add your OpenRouter API key to the `.env` file:
+    *   Set the `API_PROVIDER` environment variable to choose the AI provider:
+        *   `openrouter` (default): Uses the OpenRouter API. Requires `OPENROUTER_API_KEY`.
+        *   `openai`: Uses the OpenAI API. Requires `OPENAI_API_KEY`.
+        *   `deepseek`: Uses the DeepSeek API. Requires `DEEPSEEK_API_KEY`.
+    *   Add the API key for your chosen provider to the `.env` file:
 
         ```
-        OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY
+        API_PROVIDER=openai
+        OPENAI_API_KEY=YOUR_OPENAI_API_KEY
+        #OPENROUTER_API_KEY=YOUR_OPENROUTER_API_KEY #Uncomment if using OpenRouter
         ```
 
     **Important:** Never commit your `.env` file to a public repository. This file contains sensitive information.
@@ -49,7 +55,7 @@ FrodoAI is a web-based AI chat application with planned integrations for Discord
     node server.js
     ```
 
-    This starts the Express server on port 5000 (by default).  Ensure the `OPENROUTER_API_KEY` environment variable is set before running this command. The server will exit if the API key is not found.
+    This starts the Express server on port 5000 (by default). Ensure the necessary API key environment variable (`OPENROUTER_API_KEY`, `OPENAI_API_KEY`, or `DEEPSEEK_API_KEY`) is set before running this command. The server will exit if the API key is not found.
 
 2.  **Start the frontend development server:**
 
