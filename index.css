@@ -93,3 +93,51 @@ code {
 .send-button:hover {
   background-color: #0056b3;
 }
+
+.file-content {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: left;
+}
+
+.file-content h3 {
+    margin-top: 0;
+}
+
+.search-bar {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.search-bar input {
+    flex-grow: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.search-bar button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.search-bar button:hover {
+    background-color: #0056b3;
+}
+
+.file-content pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+
+.file-content mark {
+    background-color: yellow;
+}

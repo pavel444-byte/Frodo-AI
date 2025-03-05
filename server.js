@@ -42,24 +42,33 @@ app.get('/test-env', (req, res) => {
 });
 
 app.post('/chat', async (req, res) => {
-    const { message } = req.body;
+    const { message, fileContent, searchQuery } = req.body;
 
     if (!message) {
         return res.status(400).send('Message is required');
     }
+
+    // Basic search functionality
+    let context = fileContent || '';
+    if (searchQuery && fileContent) {
+        const searchResults = findRelevantContext(fileContent, searchQuery);
+        context = searchResults.join('\n'); // Join the results for context
+    }
+
+    const prompt = `Context: ${context}\nUser: ${message}`;
 
     try {
         let responseData;
 
         switch (API_PROVIDER) {
             case 'openai':
-                responseData = await aiService.callOpenAI(message, OPENAI_API_KEY);
+                responseData = await aiService.callOpenAI(prompt, OPENAI_API_KEY);
                 break;
             case 'deepseek':
-                responseData = await aiService.callDeepSeek(message, DEEPSEEK_API_KEY);
+                responseData = await aiService.callDeepSeek(prompt, DEEPSEEK_API_KEY);
                 break;
             default: // 'openrouter'
-                responseData = await aiService.callOpenRouter(message, OPENROUTER_API_KEY);
+                responseData = await aiService.callOpenRouter(prompt, OPENROUTER_API_KEY);
                 break;
         }
 
@@ -86,6 +95,28 @@ app.post('/chat', async (req, res) => {
         }
     }
 });
+
+// Basic search function
+function findRelevantContext(fileContent, query) {
+    const words = query.toLowerCase().split(/\s+/);
+    const sentences = fileContent.split(/[.?!]/).map(s => s.trim()).filter(s => s.length > 0);
+    const results = [];
+
+    sentences.forEach(sentence => {
+        let matchCount = 0;
+        words.forEach(word => {
+            if (sentence.toLowerCase().includes(word)) {
+                matchCount++;
+            }
+        });
+        if (matchCount === words.length) {
+            results.push(sentence);
+        }
+    });
+
+    return results;
+}
+
 
 // File upload endpoint
 app.post('/upload', fileUploadService.upload.single('file'), async (req, res) => {
