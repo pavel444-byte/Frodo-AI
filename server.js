@@ -1,13 +1,15 @@
 const express = require('express');
-const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
+const aiService = require('./ai_service');
+const fileUploadService = require('./file_upload_service');
 const app = express();
 const port = 5001;
 require('dotenv').config();
 
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 const API_PROVIDER = process.env.API_PROVIDER || 'openrouter';
 const OPENROUTER_API_KEY = process.env.OPENROUTER_API_KEY;
@@ -51,13 +53,13 @@ app.post('/chat', async (req, res) => {
 
         switch (API_PROVIDER) {
             case 'openai':
-                responseData = await callOpenAI(message);
+                responseData = await aiService.callOpenAI(message, OPENAI_API_KEY);
                 break;
             case 'deepseek':
-                responseData = await callDeepSeek(message);
+                responseData = await aiService.callDeepSeek(message, DEEPSEEK_API_KEY);
                 break;
             default: // 'openrouter'
-                responseData = await callOpenRouter(message);
+                responseData = await aiService.callOpenRouter(message, OPENROUTER_API_KEY);
                 break;
         }
 
@@ -85,78 +87,21 @@ app.post('/chat', async (req, res) => {
     }
 });
 
-async function callOpenRouter(message) {
+// File upload endpoint
+app.post('/upload', fileUploadService.upload.single('file'), async (req, res) => {
     try {
-        const response = await axios.post(
-            'https://api.openrouter.ai/api/v1/chat/completions',
-            {
-                model: 'mistralai/Mistral-7B-Instruct-v0.1',
-                messages: [{ role: 'user', content: message }],
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${OPENROUTER_API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-        return response.data;
+        const result = await fileUploadService.processFileUpload(req, res);
+        res.json(result);
     } catch (error) {
-        console.error('OpenRouter API Error:', error);
-        throw error;
+        console.error('File upload error:', error);
+        res.status(500).send(error.message);
     }
-}
+});
 
-async function callOpenAI(message) {
-    try {
-        const response = await axios.post(
-            'https://api.openai.com/v1/chat/completions',
-            {
-                model: 'gpt-3.5-turbo',
-                messages: [{ role: 'user', content: message }],
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${OPENAI_API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-        return response.data;
-    } catch (error) {
-        console.error('OpenAI API Error:', error);
-        throw error;
-    }
-}
-
-async function callDeepSeek(message) {
-    try {
-        const response = await axios.post(
-            'https://api.deepseek.com/v1/chat/completions',
-            {
-                model: 'deepseek-chat',
-                messages: [{ role: 'user', content: message }],
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${DEEPSEEK_API_KEY}`,
-                    'Content-Type': 'application/json'
-                }
-            }
-        );
-        return response.data;
-    } catch (error) {
-        console.error('DeepSeek API Error:', error);
-        throw error;
-    }
-}
-
-app.use(express.static(path.join(__dirname, 'client/public'))); // Modified to serve from 'client/public'
-// app.use(express.static(path.join(__dirname, 'client/build'))); // Original line
+app.use(express.static(path.join(__dirname, 'client/public')));
 
 app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'client/public/index.html')); // Modified to serve index.html from 'client/public'
-    // res.sendFile(path.join(__dirname, 'client/build/index.html')); // Original line
+    res.sendFile(path.join(__dirname, 'client/public/index.html'));
 });
 
 app.listen(port, () => {
